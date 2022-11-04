@@ -1,1 +1,1 @@
-
+This repository contains the .Rmd and .md files of a function that detects outliers in a vector. More documentations can be found inside the documents. 

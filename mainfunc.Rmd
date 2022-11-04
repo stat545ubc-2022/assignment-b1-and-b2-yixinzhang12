@@ -1,0 +1,60 @@
+---
+title: "Function"
+author: "Yixin (Izzy) Zhang"
+date: '2022-11-04'
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(testthat)
+```
+
+## Exercise 1: Make a Function
+## Exercise 2: Document your Function
+```{r}
+#' Outlier detector
+#' 
+#' @details
+#' This function takes in a vector and exmaines if there are outliers
+#'
+#' @param x the numerical vector, the threshold standard deviation
+#'
+#' @return the outliers, or 'no outlier detected'
+outdet <- function(x, thressd){
+  if (is.numeric(x)){
+    # get mean and Standard deviation
+    mean = mean(x)
+    std = sd(x)
+    # get threshold values for outliers
+    Tmin = mean-(thressd*std)
+    Tmax = mean+(thressd*std)
+    # find outlier
+    out <- x[which(x < Tmin | x > Tmax)]
+    if (length(out) == 0){
+      return('no outlier detected')
+    }else{return(out)}
+  }else{return("Please make sure the first input is a numeric vector.")}
+}
+```
+
+## Exercise 3: Include Examples
+```{r, error=TRUE}
+x = c(10,4,6,8,9,8,7,6,12,14,11,9,8,4,5,10,14,12,15,7,10,14,24,28)
+outdet(x, 3)
+outdet(x, 4)
+outdet(x)
+outdet('popcorn', 5)
+outdet(NA, 5)
+```
+
+## Exercise 4: Test the Function
+```{r}
+test_that("Basic testing", {
+  expect_equal(outdet(c(10,4,6,8,9,8,7,6,12,14,11,9,8,4,5,10,14,12,15,7,10,14,24,28), 3), 28)
+  expect_equal(outdet(c(10,4,6,8,9,8,7,6,12,14,11,9,8,4,5,10,14,12,15,7,10,14,24,28), 4), "no outlier detected")
+  expect_equal(outdet('popcorn', 5), "Please make sure the first input is a numeric vector.")
+  expect_error(outdet(c(10,4,6,8,9,8,7,6,12,14,11,9,8,4,5,10,14,12,15,7,10,14,24,28)))
+})
+```
+
